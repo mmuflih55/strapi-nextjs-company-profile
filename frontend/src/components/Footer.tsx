@@ -3,8 +3,10 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Logo from "./Logo";
 import { CgWebsite } from "react-icons/cg";
-import { FaDiscord } from "react-icons/fa";
-import { AiFillTwitterCircle, AiFillYoutube } from "react-icons/ai";
+import { FaDiscord, FaInstagram } from "react-icons/fa";
+import { RiTwitterXLine } from "react-icons/ri";
+import { AiFillYoutube, AiFillGithub, AiFillLinkedin } from "react-icons/ai";
+import { ReactNode } from "react";
 
 interface FooterLink {
   id: number;
@@ -51,20 +53,19 @@ function CategoryLink({ attributes }: CategoryLink) {
   );
 }
 
-function RenderSocialIcon({ social }: { social: string | undefined }) {
-  switch (social) {
-    case "WEBSITE":
-      return <CgWebsite />;
-    case "TWITTER":
-      return <AiFillTwitterCircle />;
-    case "YOUTUBE":
-      return <AiFillYoutube />;
-    case "DISCORD":
-      return <FaDiscord />;
-    default:
-      return null;
-  }
-}
+// function renderSocialIcon({ social }: { social: string | undefined }) {
+//   if (!social) return null;
+const renderSocialIcon: { [key: string]: ReactNode } = {
+  WEBSITE: <CgWebsite />,
+  TWITTER: <RiTwitterXLine />,
+  YOUTUBE: <AiFillYoutube />,
+  DISCORD: <FaDiscord />,
+  INSTAGRAM: <FaInstagram />,
+  LINKEDIN: <AiFillLinkedin />,
+  GITHUB: <AiFillGithub />,
+};
+//   return socialIcons[social];
+// }
 
 export default function Footer({
   logoUrl,
@@ -81,7 +82,6 @@ export default function Footer({
   legalLinks: Array<FooterLink>;
   socialLinks: Array<FooterLink>;
 }) {
-
   return (
     <footer className="py-6 dark:bg-black dark:text-gray-50">
       <div className="container px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50">
@@ -136,9 +136,9 @@ export default function Footer({
                   href={link.url}
                   title={link.text}
                   target={link.newTab ? "_blank" : "_self"}
-                  className="flex items-center justify-center w-10 h-10 rounded-full dark:bg-violet-400 dark:text-gray-900"
+                  className="flex items-center justify-center w-10 h-10 rounded-full dark:bg-white dark:text-gray-900"
                 >
-                  <RenderSocialIcon social={link.social} />
+                  {link.social && renderSocialIcon[link.social as string]}
                 </a>
               );
             })}
